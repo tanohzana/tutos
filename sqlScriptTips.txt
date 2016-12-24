@@ -1,0 +1,28 @@
+Simples regles pour passer d'un diagramme E/R a un script de creation de tables:
+
+- Lors de la creation de tables, une clef etrangere ne peut referencer plus d'un attribut d'une autre table
+	Exemple: users[ name | surname ] ---- rdv[ nameUser | surnameUser | time ]
+				CLEF ETRANGERE name 	--> nameUser
+				CLEF ETRANGERE surname 	--> surnameUser
+
+		Ceci est un exemple de ce qu'il ne faut pas faire.
+
+	Pour pallier a ce probleme, il faut declarer des ids.
+
+	Bonne pratique:
+
+	users[ id | name | surname ] ---- rdv[ idUser | time]
+
+- Il existe 3 manieres de creer des tables: methode des nulls, methode OO et methode E/R
+	Nous utiliserons les 2e et 3e methodes. Dans notre cas de figure, il n'y a pas beaucoup de differences.
+	
+	-> Chaque entite du diagramme represente une table.
+	-> Une table doit etre cree pour les relation N <--> N
+	-> Lors de relation 1 <--> N, la clef primaire du cote N migre vers le cote 1
+		Exemple: users <N--1> rdv ==> users[ id | name | surname ] ---- rdv[ idUser | time ]
+
+- Il est important que chaque clef etrangere qui reference un attribut d'une autre table reference le bon nom d'attribut de l'autre table, et qu'il soit du meme type
+	Exemple: users[ id | name | surname ] ---- rdv[ idUser | time ]
+				FOREIGN KEY idUser REFERENCES users(id)
+
+- Pour le reste, faire parler son bon sens :) et respecter le langage SQL.
